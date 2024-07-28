@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integral Theory 4-Quadrant Learning Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        #input-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        #word-input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+            width: 200px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #color-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .color-button {
+            width: 80px;
+        }
+        #questions-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .quadrant {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .quadrant h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .question {
+            margin-bottom: 10px;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-style: italic;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Integral Theory 4-Quadrant Learning Tool</h1>
+    <div id="input-section">
+        <input type="text" id="word-input" placeholder="Enter a word or phrase">
+        <button id="enter-btn">Enter</button>
+        <button id="suggest-btn">Suggest</button>
+    </div>
+    <div id="color-buttons">
+        <button class="color-button" style="background-color: #FEECD8;">Beige</button>
+        <button class="color-button" style="background-color: #BF6CB5;">Purple</button>
+        <button class="color-button" style="background-color: #FF4136;">Red</button>
+        <button class="color-button" style="background-color: #0074D9;">Blue</button>
+        <button class="color-button" style="background-color: #FF851B;">Orange</button>
+        <button class="color-button" style="background-color: #2ECC40;">Green</button>
+        <button class="color-button" style="background-color: #FFDC00;">Yellow</button>
+        <button class="color-button" style="background-color: #39CCCC;">Turquoise</button>
+    </div>
+    <div id="questions-container"></div>
+
+    <script>
+        const wordInput = document.getElementById('word-input');
+        const enterBtn = document.getElementById('enter-btn');
+        const suggestBtn = document.getElementById('suggest-btn');
+        const colorButtons = document.querySelectorAll('.color-button');
+        const questionsContainer = document.getElementById('questions-container');
+
+        const spiralDynamicsColors = ['Beige', 'Purple', 'Red', 'Blue', 'Orange', 'Green', 'Yellow', 'Turquoise'];
+        const quadrants = ['Upper Left', 'Upper Right', 'Lower Left', 'Lower Right'];
+
+        // Sample words for the "Suggest" button
+        const sampleWords = ['Climate Change', 'Artificial Intelligence', 'Social Media', 'Space Exploration', 'Pandemic', 'Cryptocurrency', 'Sustainable Energy', 'Genetic Engineering'];
+
+        // Current events and historical references (simplified for this example)
+        const currentEvents = {
+            'Climate Change': 'Recent UN Climate Summit',
+            'Artificial Intelligence': 'Launch of GPT-4',
+            'Social Media': 'TikTok privacy concerns',
+            'Space Exploration': 'Mars Perseverance Rover discoveries',
+            'Pandemic': 'COVID-19 vaccine distribution challenges',
+            'Cryptocurrency': 'Bitcoin\'s environmental impact debate',
+            'Sustainable Energy': 'Breakthrough in fusion energy research',
+            'Genetic Engineering': 'CRISPR gene-editing ethics discussion'
+        };
+
+        const historicalReferences = {
+            'Beige': 'Early human survival techniques',
+            'Purple': 'Ancient tribal rituals',
+            'Red': 'The rise of ancient empires',
+            'Blue': 'The Ten Commandments',
+            'Orange': 'The Industrial Revolution',
+            'Green': 'The 1960s counterculture movement',
+            'Yellow': 'Systems thinking in the Information Age',
+            'Turquoise': 'Global consciousness in the Internet era'
+        };
+
+        function generateQuestions(word, color) {
+            const currentEvent = currentEvents[word] || 'recent global events';
+            const historicalReference = historicalReferences[color];
+            
+            const questions = {
+                'Upper Left (Individual Interior)': [
+                    `How might the concept of "${word}" challenge personal beliefs in a ${color} mindset, especially in light of ${currentEvent}?`,
+                    `Reflecting on ${historicalReference}, how could an individual at the ${color} level integrate "${word}" into their worldview?`
+                ],
+                'Upper Right (Individual Exterior)': [
+                    `What unique behaviors related to "${word}" might someone at the ${color} level exhibit, considering the impact of ${currentEvent}?`,
+                    `How could engagement with "${word}" affect the physical or mental well-being of an individual at the ${color} stage, drawing parallels to ${historicalReference}?`
+                ],
+                'Lower Left (Collective Interior)': [
+                    `In the context of ${currentEvent}, how does a ${color} worldview shape collective values around "${word}"?`,
+                    `What shared beliefs about "${word}" might emerge in a ${color} dominant culture, and how do these relate to ${historicalReference}?`
+                ],
+                'Lower Right (Collective Exterior)': [
+                    `Considering ${currentEvent}, what systemic changes related to "${word}" might a ${color} society implement?`,
+                    `How might "${word}" influence social structures in a predominantly ${color} world, and what lessons can be drawn from ${historicalReference}?`
+                ]
+            };
+            displayQuestions(questions, color, word);
+        }
+
+        function displayQuestions(questions, color, word) {
+            questionsContainer.innerHTML = '';
+            for (const [quadrant, questionList] of Object.entries(questions)) {
+                const quadrantElement = document.createElement('div');
+                quadrantElement.className = 'quadrant';
+                quadrantElement.innerHTML = `
+                    <h3>${quadrant} (${color})</h3>
+                    ${questionList.map((q, index) => `
+                        <div class="question">
+                            <p>${q}</p>
+                            <textarea rows="4" placeholder="Enter your answer here"></textarea>
+                            <div class="button-group">
+                                <button class="check-btn" onclick="checkAnswer(this, '${color}', '${word}', ${index})">Check</button>
+                                <button class="help-btn" onclick="provideHelp(this, '${color}', '${word}', ${index})">Help</button>
+                            </div>
+                            <div class="feedback"></div>
+                        </div>
+                    `).join('')}
+                `;
+                questionsContainer.appendChild(quadrantElement);
+            }
+        }
+
+        function checkAnswer(button, color, word, questionIndex) {
+            const answerText = button.parentElement.previousElementSibling.value;
+            const feedbackElement = button.parentElement.nextElementSibling;
+            
+            // This is a simplified analysis. In a real application, this would be much more sophisticated.
+            const colorKeywords = {
+                'Beige': ['survival', 'instinct', 'basic needs'],
+                'Purple': ['tribe', 'spirits', 'rituals'],
+                'Red': ['power', 'dominance', 'impulsive'],
+                'Blue': ['order', 'purpose', 'tradition'],
+                'Orange': ['achievement', 'progress', 'competition'],
+                'Green': ['community', 'equality', 'harmony'],
+                'Yellow': ['systems', 'integration', 'adaptability'],
+                'Turquoise': ['holistic', 'global', 'interconnected']
+            };
+
+            const keywords = colorKeywords[color];
+            const matchCount = keywords.filter(keyword => answerText.toLowerCase().includes(keyword)).length;
+            const percentage = (matchCount / keywords.length) * 100;
+
+            feedbackElement.textContent = `Your answer is approximately ${percentage.toFixed(0)}% aligned with the ${color} perspective. ${getColorSpecificFeedback(color, percentage)}`;
+        }
+
+        function getColorSpecificFeedback(color, percentage) {
+            if (percentage >= 75) {
+                return `Great job capturing the ${color} worldview!`;
+            } else if (percentage >= 50) {
+                return `You're on the right track with the ${color} perspective. Try to incorporate more ${color}-specific concepts.`;
+            } else {
+                return `Consider revisiting the key aspects of the ${color} worldview and how they might approach this topic.`;
+            }
+        }
+
+        function provideHelp(button, color, word, questionIndex) {
+            const feedbackElement = button.parentElement.nextElementSibling;
+            const helpText = getColorSpecificHelp(color, word);
+            feedbackElement.textContent = helpText;
+        }
+
+        function getColorSpecificHelp(color, word) {
+            const helpTexts = {
+                'Beige': `Consider basic survival needs related to "${word}". How does it affect immediate, physical reality?`,
+                'Purple': `Think about "${word}" in terms of tribal traditions, spirits, and magical thinking.`,
+                'Red': `Approach "${word}" from a perspective of power, impulse, and immediate gratification.`,
+                'Blue': `Reflect on how "${word}" fits into a larger order or purpose. What are the rules or traditions involved?`,
+                'Orange': `Consider "${word}" in terms of progress, achievement, and competition. How can it be measured or improved?`,
+                'Green': `Think about "${word}" in the context of community, equality, and ecological balance.`,
+                'Yellow': `Approach "${word}" from a systems perspective. How does it integrate with other aspects of life and society?`,
+                'Turquoise': `Consider "${word}" holistically. How does it connect to global consciousness and the interconnectedness of all things?`
+            };
+            return helpTexts[color];
+        }
+
+        colorButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const word = wordInput.value.trim();
+                const color = button.textContent;
+                if (word) {
+                    generateQuestions(word, color);
+                } else {
+                    alert('Please enter a word or phrase first.');
+                }
+            });
+        });
+
+        enterBtn.addEventListener('click', () => {
+            const word = wordInput.value.trim();
+            if (word) {
+                const randomColor = spiralDynamicsColors[Math.floor(Math.random() * spiralDynamicsColors.length)];
+                generateQuestions(word, randomColor);
+            } else {
+                alert('Please enter a word or phrase first.');
+            }
+        });
+
+        suggestBtn.addEventListener('click', () => {
+            const randomWord = sampleWords[Math.floor(Math.random() * sampleWords.length)];
+            wordInput.value = randomWord;
+        });
+    </script>
+</body>
+</html>
